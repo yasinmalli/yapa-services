@@ -28,7 +28,7 @@ namespace yapa_migrations
                 .ConfigureRunner(rb => rb                    
                     .AddPostgres()
                     .WithGlobalConnectionString(connectionString)
-                    .ScanIn(typeof(M10_CreateExpenses).Assembly).For.Migrations())
+                    .ScanIn(typeof(M10_CreateExpenseTypes).Assembly).For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);
         }
