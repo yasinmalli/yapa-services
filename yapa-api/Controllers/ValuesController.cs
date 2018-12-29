@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using yapa_api.Models;
 
 namespace yapa_api.Controllers
 {
@@ -10,11 +10,26 @@ namespace yapa_api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
+        private readonly personalDbContext _context;
+        public ValuesController(personalDbContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var expenseType = new ExpenseType
+            {
+                TypeId = Guid.NewGuid(),
+                Type = "test" + Guid.NewGuid(),
+                Description = "asdasdasd"
+            };
+
+            _context.ExpenseTypes.Add(expenseType);
+            _context.SaveChanges();
+
+            return new List<string> { "value1", "value2" };
         }
 
         // GET api/values/5
