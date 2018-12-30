@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using yapa_api.Models;
@@ -19,17 +20,26 @@ namespace yapa_api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            var expenseType = new ExpenseType
+            var mainCategories = _context.MainCategory.Include(c => c.SubCategories);
+            var subCategories = mainCategories.First().SubCategories;
+
+            var expense = new Expense
             {
-                TypeId = Guid.NewGuid(),
-                Type = "test" + Guid.NewGuid(),
-                Description = "asdasdasd"
+                Price = 54.45,
+                SpentAt = "Yellow Cab",
+                CreatedOn = DateTime.UtcNow,
+                Time = DateTime.UtcNow,
+                Description = "took a cab to somewhere",
+                ExpenseId = Guid.NewGuid(),
+                ExpenseType = ExpenseType.single,
+                MainCategoryId = mainCategories.First().Id,
+                SubCategoryId = subCategories.First(c => c.Name == "Cab").Id
             };
 
-            _context.ExpenseTypes.Add(expenseType);
+            _context.Add(expense);
             _context.SaveChanges();
 
-            return new List<string> { "value1", "value2" };
+            return subCategories.Select(c => c.Name).ToList();
         }
 
         // GET api/values/5
