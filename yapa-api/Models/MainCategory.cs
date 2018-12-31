@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using yapa_api.Contracts;
 
 namespace yapa_api.Models
 {
-    public class MainCategory
+    public class MainCategory : IEntity
     {
         public MainCategory()
         {

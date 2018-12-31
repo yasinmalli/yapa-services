@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using yapa_api.Contracts;
 using yapa_api.Models;
+using yapa_api.Repositories;
 
 namespace yapa_api
 {
@@ -20,12 +22,16 @@ namespace yapa_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            AddScopeObjects(services);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDbContext<personalDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+        }
 
-            // todo: drive this from appsettings.json
-            var connectionString = "Server=192.168.1.75;Port=5432;User Id=postgres;Password=Password1;Database=personal_db;";
-            services.AddDbContext<personalDbContext>(options => options.UseNpgsql(connectionString));
+        public void AddScopeObjects(IServiceCollection services)
+        {
+            services.AddScoped<IMainCategoryRepository, MainCategoryRepository>()
+                    .AddScoped<ISubCategoryRepository, SubCategoryRepository>()
+                    .AddScoped<IExpenseRepository, ExpenseRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

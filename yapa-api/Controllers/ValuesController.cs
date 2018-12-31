@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using yapa_api.Models;
 
 namespace yapa_api.Controllers
@@ -20,26 +17,26 @@ namespace yapa_api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            var mainCategories = _context.MainCategory.Include(c => c.SubCategories);
-            var subCategories = mainCategories.First().SubCategories;
+            //var mainCategories = _context.MainCategory.Include(c => c.SubCategories);
+            //var subCategories = mainCategories.First().SubCategories;
 
-            var expense = new Expense
-            {
-                Price = 54.45,
-                SpentAt = "Yellow Cab",
-                CreatedOn = DateTime.UtcNow,
-                Time = DateTime.UtcNow,
-                Description = "took a cab to somewhere",
-                ExpenseId = Guid.NewGuid(),
-                ExpenseType = ExpenseType.single,
-                MainCategoryId = mainCategories.First().Id,
-                SubCategoryId = subCategories.First(c => c.Name == "Cab").Id
-            };
+            //var expense = new Expense
+            //{
+            //    Price = 54.45,
+            //    SpentAt = "Yellow Cab",
+            //    CreatedOn = DateTime.UtcNow,
+            //    Time = DateTime.UtcNow,
+            //    Description = "took a cab to somewhere",
+            //    ExpenseId = Guid.NewGuid(),
+            //    ExpenseType = ExpenseType.single,
+            //    MainCategoryId = mainCategories.First().Id,
+            //    SubCategoryId = subCategories.First(c => c.Name == "Cab").Id
+            //};
 
-            _context.Add(expense);
-            _context.SaveChanges();
+            //_context.Add(expense);
+            //_context.SaveChanges();
 
-            return subCategories.Select(c => c.Name).ToList();
+            return new List<string> { "value1", "value2" };
         }
 
         // GET api/values/5

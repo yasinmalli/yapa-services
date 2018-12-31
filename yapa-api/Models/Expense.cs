@@ -1,4 +1,5 @@
 ﻿using System;
+using yapa_api.Contracts;
 
 namespace yapa_api.Models
 {
@@ -9,7 +10,7 @@ namespace yapa_api.Models
         reoccuringYearly
     }
 
-    public class Expense
+    public class Expense : IEntity
     {
         public long Id { get; set; }
         public Guid ExpenseId { get; set; }
