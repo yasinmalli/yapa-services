@@ -23,8 +23,18 @@ namespace yapa_api
         public void ConfigureServices(IServiceCollection services)
         {
             AddScopeObjects(services);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<personalDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowLocalhost", 
+                    builder => builder.WithOrigins("http://localhost:3000")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod()
+                                      .AllowCredentials());
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         public void AddScopeObjects(IServiceCollection services)
@@ -46,7 +56,8 @@ namespace yapa_api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection();            
+            app.UseCors("AllowLocalhost");
             app.UseMvc();
         }
     }
