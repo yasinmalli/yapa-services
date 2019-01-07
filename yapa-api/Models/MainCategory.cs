@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using yapa_api.Contracts;
 
 namespace yapa_api.Models
@@ -15,7 +16,9 @@ namespace yapa_api.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
+        [JsonIgnore]
         public ICollection<SubCategory> SubCategories { get; set; }
+        [JsonIgnore]
         public ICollection<Expense> Expenses { get; set; }
     }
 }

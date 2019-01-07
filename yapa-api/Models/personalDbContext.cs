@@ -16,22 +16,30 @@ namespace yapa_api.Models
             modelBuilder.Entity<MainCategory>(entity =>
             {
                 entity.ToTable("expense_main_category");
-                entity.Property(e => e.Id).HasColumnName("id");                
-                entity.Property(e => e.Name).HasColumnName("name");
-                entity.Property(e => e.Description).HasColumnName("description");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("id").IsRequired();
+                entity.Property(e => e.Name).HasColumnName("name").HasMaxLength(400).IsRequired();
+                entity.Property(e => e.Description).HasMaxLength(4000).HasColumnName("description");
+
+                entity.HasMany(e => e.SubCategories).WithOne(e => e.MainCategory);
+                entity.HasMany(e => e.Expenses).WithOne(e => e.MainCategory);
             });
 
             modelBuilder.Entity<SubCategory>(entity =>
             {
                 entity.ToTable("expense_sub_category");
+                entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("id");                
                 entity.Property(e => e.Name).HasColumnName("name");
                 entity.Property(e => e.Description).HasColumnName("description");
                 entity.Property(e => e.MainCategoryId).HasColumnName("maincategoryid");
+
+                entity.Ignore(e => e.MainCategoryName);
                 entity.HasOne(e => e.MainCategory)
                       .WithMany(d => d.SubCategories)
                       .HasForeignKey(k => k.MainCategoryId)
                       .HasConstraintName("FK_sub_category_main_category_id");
+                entity.HasMany(e => e.Expenses).WithOne(e => e.SubCategory);
             });
 
             modelBuilder.Entity<Expense>(entity =>
@@ -48,6 +56,8 @@ namespace yapa_api.Models
                 entity.Property(e => e.SubCategoryId).HasColumnName("subcategoryid");
                 entity.Property(e => e.ExpenseType).HasColumnName("expensetype")
                       .HasConversion(t => t.ToString(), t => (ExpenseType)Enum.Parse(typeof(ExpenseType), t));
+
+                entity.Ignore(e => e.MainCategoryName).Ignore(e => e.SubCategoryName);
                 entity.HasOne(e => e.MainCategory)
                       .WithMany(d => d.Expenses)
                       .HasForeignKey(k => k.MainCategoryId)

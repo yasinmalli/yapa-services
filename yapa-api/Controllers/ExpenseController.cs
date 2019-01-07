@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using yapa_api.Contracts;
 using yapa_api.Models;
 
@@ -22,6 +25,25 @@ namespace yapa_api.Controllers
                 return NotFound();
 
             return Ok(expense);
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Expense>> GetAll()
+        {
+            IList<Expense> expenses = new List<Expense>();
+            foreach (var expense in _repository.GetExpensesWithCategories().Take(10))
+            {
+                expense.MainCategoryName = expense.MainCategory.Name;
+                expense.SubCategoryName = expense.SubCategory.Name;
+                
+                //string type;
+                //if (!Enum.TryParse<ExpenseType>(expense.ExpenseType.ToString(), out string type))
+                //    type = ExpenseType.single.ToString();
+                
+                expenses.Add(expense);
+            }
+            
+            return new ObjectResult(expenses) { StatusCode = (int)HttpStatusCode.OK };            
         }
 
         [HttpPost]

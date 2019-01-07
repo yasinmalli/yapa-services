@@ -17,9 +17,9 @@ namespace yapa_api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<SubCategory>> GetAllSubCategories([FromQuery] long mainCategoryId)
+        public ActionResult<IEnumerable<SubCategory>> GetAllSubCategories()
         {
-            var subCategories = _repository.GetAll().Where(c => c.MainCategoryId == mainCategoryId);
+            var subCategories = _repository.GetAll();
             var result = new ObjectResult(subCategories) { StatusCode = (int)HttpStatusCode.OK };
 
             return result;

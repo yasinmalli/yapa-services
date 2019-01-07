@@ -1,9 +1,10 @@
-﻿using yapa_api.Models;
+﻿using System.Collections.Generic;
+using yapa_api.Models;
 
 namespace yapa_api.Contracts
 {
     public interface IExpenseRepository : IRepository<Expense>
     {
-        Expense SomeCustomMethod();
+        IEnumerable<Expense> GetExpensesWithCategories();
     }
 }
