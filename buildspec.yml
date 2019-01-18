@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Restore started on `date`
+      - dotnet restore yapa-api/yapa-api.csproj
+      - dotnet restore yapa-unittests/yapa-unittests.csproj
+  build:
+    commands:
+      - echo Build started on `date`
+      - dotnet publish -c release -o ./build yapa-api/yapa-api.csproj
+  post_build:
+    commands:
+      - echo Unittest running started on `date`
+      - dotnet publish -c release -o ./test_output yapa-unittests/yapa-unittests.csproj
+
+artifacts:
+  files:
+    - yapa-api/build/**/*
+    - yapa-unittests/test_output/**/*
+    - scripts/**/*
+    - appspec.yml
