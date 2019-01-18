@@ -17,7 +17,7 @@ namespace yapa_api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new List<string> { "value1", "value2" };
+            return new List<string> { "value1", "value3", "value5", "value78" };
         }
 
         // GET api/values/5
