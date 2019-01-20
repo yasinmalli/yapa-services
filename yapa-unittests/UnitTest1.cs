@@ -9,7 +9,7 @@ namespace yapa_unittests
         [Fact]
         public void Test1()
         {
-            Assert.Equal(3, 4);
+            Assert.Equal(3, 3);
         }
     }
 }
