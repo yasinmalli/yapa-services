@@ -15,7 +15,6 @@ COPY . .
 
 # test
 RUN dotnet test yapa-unittests/yapa-unittests.csproj
-#todo: figure out why this is not running
 
 # publish
 RUN dotnet publish yapa-api/yapa-api.csproj -o /publish
