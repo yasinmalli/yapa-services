@@ -27,7 +27,9 @@ namespace yapa_api
                 //     }                    
                 // })
                 .ConfigureAppConfiguration(builder => {
-                    builder.AddSecretsManager("/yapa-api");
+                    if (!builder.HostingEnvironment.IsDevelopment()) {
+                        builder.AddSystemsManager("/yapa-api");
+                    }                    
                 })
                 .UseStartup<Startup>();
     }
