@@ -27,8 +27,8 @@ namespace yapa_api
 
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowLocalhost", 
-                    builder => builder.WithOrigins("http://localhost:3000")
+                options.AddPolicy("AllowOrigin", 
+                    builder => builder.WithOrigins(Configuration["CORS:AllowedOrigins"])
                                       .AllowAnyHeader()
                                       .AllowAnyMethod()
                                       .AllowCredentials());
@@ -57,7 +57,7 @@ namespace yapa_api
             }
 
             app.UseHttpsRedirection();            
-            app.UseCors("AllowLocalhost");
+            app.UseCors("AllowOrigin");
             app.UseMvc();
         }
     }
