@@ -19,12 +19,15 @@ namespace yapa_api
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) => {
-                    if (!hostingContext.HostingEnvironment.IsDevelopment()) {
-                        config.AddSecretsManager(configurator: ops => {
-                            ops.KeyGenerator = (secret, name) => name.Replace("__", ":");
-                        });
-                    }                    
+                // .ConfigureAppConfiguration((hostingContext, config) => {
+                //     if (!hostingContext.HostingEnvironment.IsDevelopment()) {
+                //         config.AddSecretsManager(configurator: ops => {
+                //             ops.KeyGenerator = (secret, name) => name.Replace("__", ":");
+                //         });
+                //     }                    
+                // })
+                .ConfigureAppConfiguration(builder => {
+                    builder.AddSecretsManager("/yapa-api");
                 })
                 .UseStartup<Startup>();
     }
